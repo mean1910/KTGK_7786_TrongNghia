@@ -1,0 +1,48 @@
+<!-- resources/templates/nhanvien/add.html -->
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Thêm nhân viên</title>
+    <link th:replace="layout :: link-css"/>
+</head>
+<body>
+<div th:replace="layout :: header"></div>
+
+<div class="container">
+    <h1>Thêm nhân viên</h1>
+    <form th:action="@{/nhanviens/add}" method="post" th:object="${nhanvien}">
+        <div class="form-group">
+            <label>Mã NV:</label>
+            <input type="text" class="form-control" th:field="*{maNV}" required/>
+        </div>
+        <div class="form-group">
+            <label>Tên NV:</label>
+            <input type="text" class="form-control" th:field="*{tenNV}" required/>
+        </div>
+        <div class="form-group">
+            <label>Phái:</label>
+            <input type="text" class="form-control" th:field="*{phai}"/>
+        </div>
+        <div class="form-group">
+            <label>Nơi sinh:</label>
+            <input type="text" class="form-control" th:field="*{noiSinh}"/>
+        </div>
+        <div class="form-group">
+            <label>Phòng ban:</label>
+            <select class="form-control" th:field="*{phongBan}">
+                <option value="">-- Chọn phòng ban --</option>
+                <option th:each="phong : ${phongBans}" th:value="${phong}" th:text="${phong.tenPhong}"></option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>Lương:</label>
+            <input type="number" class="form-control" th:field="*{luong}"/>
+        </div>
+        <button type="submit" class="btn btn-primary">Thêm</button>
+    </form>
+</div>
+
+<div th:replace="layout :: footer"></div>
+</body>
+</html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Danh sách nhân viên</title>
+    <link th:replace="layout :: link-css"/>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+<div th:replace="layout :: header"></div>
+
+<div class="container">
+    <h1>Danh sách nhân viên</h1>
+    <table class="table table-striped table-hover">
+        <thead class="table-dark">
+        <tr>
+            <th scope="col">Mã NV</th>
+            <th scope="col">Tên NV</th>
+            <th scope="col">Giới tính</th>
+            <th scope="col">Nơi sinh</th>
+            <th scope="col">Phòng ban</th>
+            <th scope="col">Lương</th>
+            <th scope="col">Thao tác</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="nhanvien : ${danhSachNhanVien}">
+            <td th:text="${nhanvien.maNV}"></td>
+            <td th:text="${nhanvien.tenNV}"></td>
+            <td>
+                <span th:if="${nhanvien.phai == 'NAM'}">
+                    <img src="/images/man.png" alt="Nam" width="50px"/>
+                </span>
+                <span th:if="${nhanvien.phai == 'NU'}">
+                    <img src="/images/woman.png" alt="Nữ" width="50px"/>
+                </span>
+            </td>
+            <td th:text="${nhanvien.noiSinh}"></td>
+            <td th:if="${nhanvien.phongBan != null}" th:text="${nhanvien.phongBan.tenPhong}"></td>
+            <td th:unless="${nhanvien.phongBan != null}">N/A</td>
+            <td th:text="${nhanvien.luong}"></td>
+            <td>
+                <a class="btn btn-primary btn-sm" th:href="@{/nhanviens/edit/{maNV}(maNV=${nhanvien.maNV})}">
+                    <i class="fas fa-edit"></i> Sửa
+                </a>
+                <a class="btn btn-danger btn-sm"
+                   th:href="@{/nhanviens/delete/{maNV}(maNV=${nhanvien.maNV})}"
+                   onclick="return confirm('Bạn chắc chắn muốn xóa?')">
+                    <i class="fas fa-trash-alt"></i> Xóa
+                </a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- Phân trang -->
+    <nav aria-label="Page navigation example">
+        <ul class="pagination justify-content-center">
+            <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled' : ''">
+                <a class="page-link" th:href="@{/nhanviens/list(page=0)}">Đầu</a>
+            </li>
+            <li class="page-item" th:classappend="${currentPage == 0} ? 'disabled' : ''">
+                <a class="page-link" th:href="@{/nhanviens/list(page=${currentPage - 1})}">Trước</a>
+            </li>
+            <li class="page-item" th:each="page : ${#numbers.sequence(0, totalPages - 1)}" th:classappend="${page == currentPage} ? 'active' : ''">
+                <a class="page-link" th:href="@{/nhanviens/list(page=${page})}" th:text="${page + 1}"></a>
+            </li>
+            <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled' : ''">
+                <a class="page-link" th:href="@{/nhanviens/list(page=${currentPage + 1})}">Tiếp</a>
+            </li>
+            <li class="page-item" th:classappend="${currentPage == totalPages - 1} ? 'disabled' : ''">
+                <a class="page-link" th:href="@{/nhanviens/list(page=${totalPages - 1})}">Cuối</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+<div th:replace="layout :: footer"></div>
+</body>
+</html>
